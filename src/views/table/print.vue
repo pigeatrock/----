@@ -103,7 +103,7 @@ import moment from 'moment'
 			  setTimeout(() => {
 				var oldHtml = document.body.innerHTML;
 				document.body.innerHTML = document.getElementById("dayin").innerHTML;
-				window.print();
+				window.print();//打印
 				document.body.innerHTML = oldHtml;
 				}, 1000);
 		  },

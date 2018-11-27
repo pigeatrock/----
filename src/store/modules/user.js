@@ -7,6 +7,8 @@ const user = {
     name: '',
     id: '',
     website_name: '',
+    address: '',
+    website_phone: '',
     avatar: '',
     roles: [],
   },
@@ -26,6 +28,12 @@ const user = {
     // },
     SET_WEBSITE_NAME: (state, website_name) => {
       state.website_name = website_name
+    },
+    SET_ADDRESS: (state,address) => {
+      state.address = address
+    },
+    SET_WEBSITE_PHONE: (state,website_phone) => {
+      state.website_phone = website_phone
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -59,6 +67,8 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
           const data = response.data
+          console.log('这里是getinfo')
+          console.log(data);
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {
@@ -68,6 +78,8 @@ const user = {
           commit('SET_ID', data.id)
           // commit('SET_INFO_ID',data.info_id)
           commit('SET_WEBSITE_NAME', data.website_name)
+          commit('SET_ADDRESS',data.address)
+          commit('SET_WEBSITE_PHONE',data.website_phone)
           commit('SET_AVATAR', data.avatar)
           resolve(response)
         }).catch(error => {

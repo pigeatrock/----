@@ -1,14 +1,32 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-top"><h2>欢迎来到美图管理后台</h2></div>
-    <div class="dashboard-name">网点名称：广东省天河</div>
-    <div class="dashboard-name">网点地址：广东省天河区车陂</div>
-    <div class="dashboard-name">网点电话：13232706819</div>
+    <div class="dashboard-name">网点名称：{{website_name}}</div>
+    <div class="dashboard-name">网点地址：{{address}}</div>
+    <div class="dashboard-name">网点电话：{{website_phone}}</div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+export default {
+  data(){
+    return{
 
+    }
+  },
+   computed: {
+    ...mapGetters([
+      'website_name',
+      'address',
+      'website_phone',
+    ]),
+  },
+
+  methods:{
+
+  },
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
