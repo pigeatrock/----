@@ -70,11 +70,16 @@
           <el-input v-model=" form.actual_fault"/>
       </el-form-item>
       <el-form-item label="故障代码：">
-          <el-select v-model="fault_code" filterable>
+          <el-select v-model="form.fault_code" clearable filterable>
+            <el-option v-for="item in fault_options" :key="item.value" :label="item.label" :value="item.value">
+              <!-- <span style="float:left">{{item.label}}</span> -->
+              <!-- <span style="float:right;color: #8492a6; font-size: 13px">{{item.value}}</span> -->
+            </el-option>
           </el-select>
       </el-form-item>
       <el-form-item label="更换物料：">
-          <el-select v-model="materiel" filterable>
+          <el-select v-model="form.materiel" filterable>
+            <el-option v-for="item in materiel_options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
       </el-form-item>
        <el-form-item label="新imei1：" prop="new_imei1">
@@ -110,8 +115,30 @@ import { mapGetters } from 'vuex'
   }
 
   export default {
+    mounted() {
+      // this.axios.get('/getfault').then(response=>{
+      //   this.fault_options = response
+      // })
+    },
     data() {
       return {
+        fault_options:[{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        materiel_options:[],
         form: {
          //客户信息
         customer_name: '',
@@ -128,8 +155,8 @@ import { mapGetters } from 'vuex'
         //处理信息
         check_result: '故障属实',
         actual_fault: '',
-        fault_code: '主板问题',
-        materiel: '主板',
+        fault_code: '',
+        materiel: '',
         new_imei1: '',
         new_imei2: ''
         },

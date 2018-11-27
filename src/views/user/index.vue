@@ -2,7 +2,7 @@
     <div>
         <div>
             <el-row type="flex" style="margin:10px 0 10px 10px" >
-                <el-button @click="add()"  size="medium" type="success" icon="el-icon-circle-plus">添加账号</el-button>
+                <el-button @click="add()"  size="medium" type="success" icon="el-icon-circle-plus">添加网点</el-button>
             </el-row>
             <el-table :data='tableData' style="border-top:1px solid #eee">
                 <el-table-column align="center" prop='website_name' label='网点名称'>
