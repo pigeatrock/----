@@ -62,7 +62,7 @@
             </el-table-column>
             <el-table-column align="center" prop='fault_code' label='故障代码' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='material' label='更换物料' width='180'>
+            <el-table-column align="center" prop='materiel' label='更换物料' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='new_imei1' label='新imei1' width='180'>
             </el-table-column>

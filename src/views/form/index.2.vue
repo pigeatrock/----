@@ -27,15 +27,22 @@
         <el-input v-model=" form.fault_info"/>
       </el-form-item>
       <h3>货品信息</h3>
-
-
-
-      <el-form-item label="手机型号：">
-        <el-cascader :options="version_options"  v-model="form.phone_version" @active-item-change="handleItemChange" @change="materiel_list" :props="props"></el-cascader>
+      <el-form-item label="手机型号：" prop ="phone_version">
+        <el-cascader :options="version_options" v-model="form.phone_version" @active-item-change="handleItemChange" :props="props"></el-cascader>
+        <!-- <el-select v-model=" form.phone_version" placeholder="选择手机型号">
+          <el-option label="m6" value="m6"/>
+          <el-option label="m6s" value="m6s"/>
+          <el-option label="m8" value="m8"/>
+          <el-option label="m8t" value="m8t"/>
+          <el-option label="m8s" value="m8s"/>
+          <el-option label="t8" value="t8"/>
+          <el-option label="t8s" value="t8s"/>
+          <el-option label="v6" value="v6"/>
+          <el-option label="t9" value="t9"/>
+          <el-option label="t9特别版" value="t9特别版"/>
+          <el-option label="v7" value="v7"/>
+        </el-select> -->
       </el-form-item>
-
-
-
       <el-form-item label="手机颜色：" prop="phone_color" >
           <el-input v-model=" form.phone_color"/>
       </el-form-item>
@@ -66,12 +73,14 @@
       <el-form-item label="故障代码：">
           <el-select v-model="form.fault_code" clearable filterable @change="fault_change">
             <el-option v-for="item in fault_options" :key="item.fault_code" :label="item.fault_code" :value="item.id">
+              <!-- <span style="float:left">{{item.label}}</span> -->
+              <!-- <span style="float:right;color: #8492a6; font-size: 13px">{{item.value}}</span> -->
             </el-option>
           </el-select>
       </el-form-item>
       <el-form-item label="更换物料：">
           <el-select v-model="form.materiel" filterable>
-            <el-option v-for="item in materiel_options" width="auto" :key="item.value" :label="item.value" :value="item.id"></el-option>
+            <el-option v-for="item in materiel_options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
       </el-form-item>
        <el-form-item label="新imei1：" prop="new_imei1">
@@ -85,7 +94,9 @@
         <el-button @click="onCancel('form')">清空</el-button>
       </el-form-item>
     </el-form>
+
   </div>
+
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -129,32 +140,46 @@ import { mapGetters } from 'vuex'
       //得到phone version列表
       
 
-      this.axios.get('/getphoneversion1').then(response=>{
+      this.axios.get('/getphoneversion').then(response=>{
         this.phone_tmp_list = response.data.data
-        this.version_options = this.phone_tmp_list
+        // this.version_options = this.phone_tmp_list
         console.log(this.phone_tmp_list)
       })
+
+      //   this.phone_tmp_list.forEach(
+      //       function(item,index,arr){
+      //         if(item.phone_version.indexOf('m6')){
+      //           arr.push(item.phone_version)
+      //         }
+      //       } 
+      //   )
+
+      //   //数组去重
+      //   function uniq(array){
+      //     var temp = []; //一个新的临时数组
+      //     for(var i = 0; i < array.length; i++){
+      //         if(temp.indexOf(array[i]) == -1){
+      //             temp.push(array[i]);
+      //         }
+      //     }
+      //     return temp;
+      // }
+
+
+
+
+
+
+
+
     },
     data() {
       return {
-        props:{
-          value: 'label',
-          children: 'phones'
-        },
         fault_options:[],//错误列表
         fault_id:'',
         materiel_options:[],//物料列表
         phone_tmp_list:[],
-        version_options:[
-          // {
-          //   label: 'm5',
-          //   phones: []
-          // },
-          // {
-          //   label: 'm6',
-          //   phones: []
-          // }
-        ],//手机型号列表
+        version_options:[],//手机型号列表
         form: {
          //客户信息
         customer_name: '',
@@ -212,34 +237,10 @@ import { mapGetters } from 'vuex'
       };
     },
    methods: {
-     //获取phone version二级菜单
-      handleItemChange(val){
-        this.axios.get("/getphoneversion2",{
-          params: {
-            'second': val[0]
-          }
-        }).then(response=>{
-          this.version_options.forEach((item,index)=>{
-            item.phones = response.data.data
-          })
-        })
-      },
      //保存fault id
      fault_change(id){
        this.fault_id = id
        console.log(id)
-     },
-     //获取marteril列表
-     materiel_list(val){
-       console.log(val)
-       this.axios.get("/getmateriel",{
-         params:{
-           'phone_type':val[0]
-         }
-       }).then(response=>{
-         this.materiel_options = response.data
-         console.log(this.materiel_options)
-       })
      },
      //提交
     onSubmit(formName) {
@@ -260,7 +261,6 @@ import { mapGetters } from 'vuex'
               repair_result: this.form.repair_result,
               check_result: this.form.check_result,
               actual_fault: this.form.actual_fault,
-              fault_code: this.form.fault_code,
               materiel: this.form.materiel,
               new_imei1: this.form.new_imei1,
               new_imei2: this.form.new_imei2
@@ -268,7 +268,7 @@ import { mapGetters } from 'vuex'
           }).then(()=>{this.$message({
           message: '提交成功!',
           type: 'success'
-        });this.$refs['form'].resetFields();this.$router.push('/table/index')}).catch((error)=>{this.$message.error('提交失败');console.log(error);});
+        });this.$refs['form'].resetFields();}).catch((error)=>{this.$message.error('提交失败');console.log(error);});
         }else{
           console.log('error submit!!');
           return false;
@@ -289,8 +289,7 @@ import { mapGetters } from 'vuex'
     ...mapGetters([
       'id'
     ]),
-
-  },
+    },
   }
 </script>
 

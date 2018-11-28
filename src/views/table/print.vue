@@ -5,15 +5,15 @@
 	    	    <h1>美图售后服务工单</h1>
 	    	</div>
 	    	<div class="top_title2">
-	    	    <h2>服务单号：{{number}}</h2>
+	    	    <h2>服务单号：CH{{number}}</h2>
 	    	</div>
 	    	<div class="comment_box">
 	    		<div class="comment">
 			    	<div><h2>网点信息</h2></div>
 			    	<div>
-			    		<div>网点名称：{{tableData.website_name}}</div>
-	    	        	<div>网点地址：{{tableData.address}}</div>
-	    	        	<div>网点电话：{{tableData.website_phone}}</div>
+			    		<div>网点名称：{{website_name}}</div>
+	    	        	<div>网点地址：{{address}}</div>
+	    	        	<div>网点电话：{{website_phone}}</div>
 	    	        	<div>结单时间：{{end_time}}</div>
 			    	</div>
 			    </div>
@@ -33,12 +33,12 @@
 			    	<div>
 			    		<div><h2>货品信息</h2></div>
 			    		<div>
-			    			<div>品类：{{tableData.phone_version}}</div>
+			    			<div>品类：美图-{{phone_type}}</div>
 							<div>序列号：865845039932050</div>
 							<!--<div>受理时间：2018-10-20 &nbsp;&nbsp;18:57:36</div>-->
-							<div>受理时间：{{tableData.start_time}}</div>
+							<div>受理时间：{{start_time}}</div>
 							<div>维修结果：{{tableData.repair_result}}</div>
-							<div>货品型号：T8s 售后公开版专用机头（粉）</div>
+							<div>货品型号：{{tableData.phone_version}}</div>
 			    		</div>
 
 			    	</div>
@@ -59,7 +59,7 @@
 	    			<div><h2>处理信息</h2></div>
 	    			<div class="last_comment_chlid">
 						<div>处理方式:</div>
-						<div>物料名称:</div>
+						<div>物料名称: {{tableData.materiel_name}}</div>
 						<div>数量:</div>
 	    			</div>
 	    		</div>
@@ -69,20 +69,41 @@
 </template>
 <script>
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 	export default{  
 		data(){
 			return{
 				tableData:undefined,
+				start_time:undefined,
 				end_time:undefined,
 				number:undefined,
+				phone_type:undefined
+				// materiel:undefined,
 			}
 		},
+		computed: {
+			...mapGetters([
+			'website_name',
+			'address',
+			'website_phone',
+			]),
+		},
+		// created() {
+		// 	this.axios.get("/materielname",{
+		// 		params:{
+		// 			id
+		// 		}
+		// 	})
+		// },
         mounted:function(){
 			let info
 			let that = this
 			this.axios.get("/print",{params:{info_id:this.$route.params.id}}).then(response => {
 				that.tableData = response.data[0];
+				this.axios.get("/getphonetype",{params:{'phone_version':response.data[0].phone_version}}).then(response=>{that.phone_type = response.data[0].phone_type})
 				let tmp_time = response.data[0].end_time
+				let tmp_time1 = response.data[0].start_time
+				that.start_time = that.dateFormat(tmp_time1)
 				that.end_time = that.dateFormat(tmp_time)
 				that.number = that.formatDate(tmp_time)
 				console.log(that.tableData)
@@ -105,7 +126,7 @@ import moment from 'moment'
 				document.body.innerHTML = document.getElementById("dayin").innerHTML;
 				window.print();//打印
 				document.body.innerHTML = oldHtml;
-				}, 1000);
+				}, 2000);
 		  },
         }	
   }	

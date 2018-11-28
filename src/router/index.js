@@ -109,18 +109,18 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/test',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Test',
-        component: () => import('@/views/test/index'),
-        meta: {title: '测试', icon: 'nested',roles: ['super_admin']}
-      }
-    ]
-  },
+  // {
+  //   path: '/test',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Test',
+  //       component: () => import('@/views/test/index'),
+  //       meta: {title: '测试', icon: 'nested',roles: ['super_admin']}
+  //     }
+  //   ]
+  // },
 ]
 
 export default new Router({
