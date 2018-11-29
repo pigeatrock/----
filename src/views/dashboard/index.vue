@@ -4,6 +4,7 @@
     <div class="dashboard-name">网点名称：{{website_name}}</div>
     <div class="dashboard-name">网点地址：{{address}}</div>
     <div class="dashboard-name">网点电话：{{website_phone}}</div>
+    <div class="dashboard-name">操作员：{{name}}</div>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ export default {
       'website_name',
       'address',
       'website_phone',
+      'name'
     ]),
   },
 

@@ -80,6 +80,14 @@
        <el-form-item label="新imei2：" prop="new_imei2">
           <el-input v-model=" form.new_imei2"/>
       </el-form-item>
+       <el-form-item label="附件：">
+          <el-upload ref="upload" action="/post" class="upload-demo" 
+          :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove"
+          multiple :limit="3"  :auto-upload="false" :file-list="file_list">
+            <el-button size="small" type="success">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传图片</div> -->
+          </el-upload>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">提交</el-button>
         <el-button @click="onCancel('form')">清空</el-button>
@@ -106,6 +114,8 @@ import { mapGetters } from 'vuex'
 
   export default {
     mounted() {
+      //操作员
+      this.operator = this.name
       //得到fault列表
       this.axios.get('/getfault').then(response=>{
         this.fault_options = response.data
@@ -137,6 +147,8 @@ import { mapGetters } from 'vuex'
     },
     data() {
       return {
+        //附件列表
+        file_list:[],
         props:{
           value: 'label',
           children: 'phones'
@@ -175,8 +187,9 @@ import { mapGetters } from 'vuex'
         fault_code: '',
         materiel: '',
         new_imei1: '',
-        new_imei2: ''
+        new_imei2: '',
         },
+        operator: '',
         rules: {
           customer_name: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -213,6 +226,19 @@ import { mapGetters } from 'vuex'
       };
     },
    methods: {
+     //附件操作
+     handlePreview(file){
+       console.log(file)
+     },
+     handleRemove(file,file_list){
+
+     },
+     handleExceed(files,file_list){
+       this.$message.warning(`当前限制选择3个文件，本次选择了 ${files.length}个文件，共选择了 ${files.length + file_list.length}个文件`);
+     },
+     beforeRemove(file,file_list){
+       return this.$confirm(`确定移除${file.name}?`);
+     },
      //获取phone version二级菜单
       handleItemChange(val){
         console.log(val)
@@ -229,18 +255,18 @@ import { mapGetters } from 'vuex'
      //保存fault id
      fault_change(id){
        this.fault_id = id
-       console.log(id)
+      //  console.log(id)
      },
      //获取marteril列表
      materiel_list(val){
-       console.log(val)
+      //  console.log(val)
        this.axios.get("/getmateriel",{
          params:{
            'phone_type':val[0]
          }
        }).then(response=>{
          this.materiel_options = response.data
-         console.log(this.materiel_options)
+        //  console.log(this.materiel_options)
        })
      },
      //提交
@@ -265,7 +291,8 @@ import { mapGetters } from 'vuex'
               fault_code: this.form.fault_code,
               materiel: this.form.materiel,
               new_imei1: this.form.new_imei1,
-              new_imei2: this.form.new_imei2
+              new_imei2: this.form.new_imei2,
+              operator: this.operator
            }
           }).then(()=>{this.$message({
           message: '提交成功!',
@@ -289,7 +316,8 @@ import { mapGetters } from 'vuex'
   },
   computed: {
     ...mapGetters([
-      'id'
+      'id',
+      'name'
     ]),
 
   },

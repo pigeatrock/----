@@ -61,9 +61,9 @@
             </el-table-column>
             <el-table-column align="center" prop='actual_fault' label='实际故障' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='fault_code' label='故障代码' width='180'>
+            <el-table-column align="center" prop='fault_express' label='故障代码' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='materiel' label='更换物料' width='180'>
+            <el-table-column align="center" prop='materiel_name' label='更换物料' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='new_imei1' label='新imei1' width='180'>
             </el-table-column>
@@ -71,12 +71,16 @@
             </el-table-column>
             <el-table-column align="center" prop='end_time' label='结单时间' width='180' :formatter="dateFormat">
             </el-table-column>
-            <el-table-column align="center" label='操作' width='142' fixed="right">
+            <el-table-column align="center" prop='website_name' label='网点' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='operator' label='操作员' width='180'>
+            </el-table-column>
+            <el-table-column align="center" label='操作' width='100' fixed="right">
                 <template slot-scope="scope">
                     <router-link target="_blank" :to="'/print/'+scope.row.id" style="font-size:12px;color:#409EFF;display:inline-block;font-weight:bold;font-family: sans-serif;">打印</router-link>
                     <!-- <el-button @click="print(scope.row.id)" type="text" size="small" v-print="'#print_page'">打印</el-button> -->
-                    <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">{{scope.row.changeWord}}</el-button>
-                    <el-button type="text" size="small" @click="edit(scope.row.id)">编辑</el-button>
+                    <!-- <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">{{scope.row.changeWord}}</el-button>
+                    <el-button type="text" size="small" @click="edit(scope.row.id)">编辑</el-button> -->
                     <el-button @click="handleDelete(scope.$index, scope.row,scope.row.id)" type="text" size="small">删除</el-button>
                     
                 </template>
@@ -110,9 +114,9 @@
             </el-table-column>
             <el-table-column align="center" prop='actual_fault' label='实际故障' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='fault_code' label='故障代码' width='180'>
+            <el-table-column align="center" prop='fault_express' label='故障代码' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='material' label='更换物料' width='180'>
+            <el-table-column align="center" prop='materiel_name' label='更换物料' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='new_imei1' label='新imei1' width='180'>
             </el-table-column>
@@ -120,9 +124,13 @@
             </el-table-column>
             <el-table-column align="center" prop='end_time' label='结单时间' width='180' :formatter="dateFormat">
             </el-table-column>
+            <el-table-column align="center" prop='website_name' label='网点' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='operator' label='操作员' width='180'>
+            </el-table-column>
         </el-table>
 
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <!-- <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
   <el-form :model="form">
     <el-form-item label="活动名称">
       <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -138,7 +146,7 @@
     <el-button @click="dialogFormVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
   </div>
-</el-dialog>
+</el-dialog> -->
     </div>
 </template>
 <script>
