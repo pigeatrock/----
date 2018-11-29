@@ -21,7 +21,7 @@ import axios from 'axios'
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'http://127.0.0.1:88/meitu/public'
 } else {
-  axios.defaults.baseURL = 'http://nami.zzlic.cn'
+  axios.defaults.baseURL = 'http://nami.zzlic.cn/meitu/public'
 }
   // axios.defaults.baseURL = 'http://127.0.0.1:88/meitu/public/'
 Vue.prototype.axios = axios

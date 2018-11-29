@@ -13,8 +13,9 @@
             <el-col :span="6">
               <el-form ref="form" :model="form">
                 <el-form-item label="">
-                  <el-select v-model="form.phone_version" placeholder="手机型号">
-                    <el-option label="m6" value="m6"/>
+                  <el-select v-model="form.phone_type" clearable placeholder="手机型号">
+                    <el-option v-for="item in type_options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <!-- <el-option label="m6" value="m6"/>
                     <el-option label="m6s" value="m6s"/>
                     <el-option label="m8" value="m8"/>
                     <el-option label="m8t" value="m8t"/>
@@ -24,7 +25,7 @@
                     <el-option label="v6" value="v6"/>
                     <el-option label="t9" value="t9"/>
                     <el-option label="t9特别版" value="t9特别版"/>
-                    <el-option label="v7" value="v7"/>
+                    <el-option label="v7" value="v7"/> -->
                   </el-select>
                 </el-form-item>
               </el-form>
@@ -123,10 +124,10 @@
 
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
   <el-form :model="form">
-    <el-form-item label="活动名称" :label-width="formLabelWidth">
+    <el-form-item label="活动名称">
       <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="活动区域" :label-width="formLabelWidth">
+    <el-form-item label="活动区域">
       <el-select v-model="form.region" placeholder="请选择活动区域">
         <el-option label="区域一" value="shanghai"></el-option>
         <el-option label="区域二" value="beijing"></el-option>
@@ -150,13 +151,14 @@ export default {
   data() {
     return {
         form:{
-        phone_version: ''
+        phone_type: '',
       },
       tableData: [],
       tableBox:[],
       dialogFormVisible: false,
-      time1: "",
-      time2: "",
+      time1: null,
+      time2: null,
+      type_options: [],//手机类型列表
       curIndex:'',
       downloadLoading:false,
       autoWidth:true,
@@ -176,6 +178,8 @@ export default {
   mounted() {
     this.axios.get("/show",{params:{uid:this.id}}).then(response => {this.tableData = response.data;
     this.$refs.selectionTable.toggleAllSelection(this.tableData,true);});
+    //手机类型列表
+    this.axios.get("/gettypeoptions").then(response=>{this.type_options = response.data;})
  },
   methods: {
       //打印
@@ -216,13 +220,13 @@ export default {
     filter(){
       console.log(this.time1);
       console.log(this.time2);
-      console.log(this.form.phone_version);
+      console.log(this.form.phone_type);
        this.axios.get("/query", {
         params: {
-          time1: this.time1,
-          time2: this.time2,
+          time1: this.time1||'',
+          time2: this.time2||'',
           uid:this.id,
-          phone_version: this.form.phone_version,
+          phone_type: this.form.phone_type,
           
         }
       }).then(response => this.tableData = response.data);
@@ -278,8 +282,8 @@ export default {
           return "date is undefined";
         }
         //return moment(date).format("YYYY-MM-DD HH:mm:ss");
-        console.log('这里是dateFormat')
-        console.log(row.end_time)
+        // console.log('这里是dateFormat')
+        // console.log(row.end_time)
         return moment(date*1000).format("YYYY-MM-DD HH:mm:ss");
     },
   }

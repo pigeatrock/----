@@ -31,7 +31,7 @@
 
 
       <el-form-item label="手机型号：">
-        <el-cascader :options="version_options"  v-model="form.phone_version" @active-item-change="handleItemChange" @change="materiel_list" :props="props"></el-cascader>
+        <el-cascader :options="version_options" v-model="form.phone_version" @active-item-change="handleItemChange" @change="materiel_list" :props="props"></el-cascader>
       </el-form-item>
 
 
@@ -163,7 +163,8 @@ import { mapGetters } from 'vuex'
         service_type: '保内', //服务类型，默认保内
         fault_info: '', //故障描述
         //货品信息
-        phone_version: '',
+        // phone_type: '',//手机型号一级
+        phone_version: '',//手机型号二级
         phone_color: '',
         imei1: '',
         imei2: '',
@@ -214,6 +215,7 @@ import { mapGetters } from 'vuex'
    methods: {
      //获取phone version二级菜单
       handleItemChange(val){
+        console.log(val)
         this.axios.get("/getphoneversion2",{
           params: {
             'second': val[0]

@@ -5,7 +5,7 @@
 	    	    <h1>美图售后服务工单</h1>
 	    	</div>
 	    	<div class="top_title2">
-	    	    <h2>服务单号：CH{{number}}</h2>
+	    	    <h2>服务单号：CH{{number}}{{id}}</h2>
 	    	</div>
 	    	<div class="comment_box">
 	    		<div class="comment">
@@ -73,6 +73,7 @@ import { mapGetters } from 'vuex'
 	export default{  
 		data(){
 			return{
+				id:null,
 				tableData:undefined,
 				start_time:undefined,
 				end_time:undefined,
@@ -101,13 +102,13 @@ import { mapGetters } from 'vuex'
 			this.axios.get("/print",{params:{info_id:this.$route.params.id}}).then(response => {
 				that.tableData = response.data[0];
 				this.axios.get("/getphonetype",{params:{'phone_version':response.data[0].phone_version}}).then(response=>{that.phone_type = response.data[0].phone_type})
+				this.id = this.$route.params.id
 				let tmp_time = response.data[0].end_time
 				let tmp_time1 = response.data[0].start_time
 				that.start_time = that.dateFormat(tmp_time1)
 				that.end_time = that.dateFormat(tmp_time)
-				that.number = that.formatDate(tmp_time)
-				console.log(that.tableData)
-				console.log(that.end_time)
+				that.number = tmp_time
+
 				that.aPrint()
 				});
             },
