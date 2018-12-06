@@ -61,18 +61,6 @@ export const constantRouterMap = [
 ]
 
 export const asyncRouterMap = [
-  // {
-  //   path: '/table',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: {title: '信息管理', icon: 'table',roles: ['admin']}
-  //     }
-  //   ]
-  // },
   {
     path: '/form',
     component: Layout,
@@ -88,12 +76,19 @@ export const asyncRouterMap = [
   {
     path: '/table',
     component: Layout,
+    meta:{title: '信息管理',icon:'table',roles:['admin','super_admin','test']},
     children: [
       {
         path: 'index',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: {title: '信息管理', icon: 'table',roles: ['admin','super_admin','test']}
+        meta: {title: '已提交', icon: 'list',roles: ['admin','super_admin','test']}
+      },
+      {
+        path: 'storage',
+        name: 'Storage',
+        component: () => import('@/views/table/storage'),
+        meta: {title: '暂存', icon: 'submit',roles: ['admin','super_admin','test']}
       }
     ]
   },

@@ -24,59 +24,47 @@
               <el-button :loading="downloadLoading" type="success"  icon="el-icon-upload2" @click="exportExcel">导出Excel</el-button>
         </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="3"><div style="height: 40px;text-align: center;line-height: 40px;color: #909399;">imei或单号：</div></el-col>
-          <el-col :span="10">
-              <el-input prefix-icon="el-icon-search" clearable="ture" placeholder="搜索" v-model="query_string">
-                <el-button slot="append" icon="el-icon-search" @click="querySearch"></el-button>
-              </el-input>
-          </el-col>
-          </el-row>
         <el-table class="tableBox" ref="selectionTable" :data='tableData' style="width:100%;text-align:center" @selection-change="SelectionChange">
             <el-table-column  type="selection" ></el-table-column>
-            <el-table-column align="center" prop='website_name' label='受理机构名称' width='180'>
+            <el-table-column align="center" prop='service_number' label='工单号' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='address_sheng' label='省份' width='180'>
+            <el-table-column align="center" prop='customer_name' label='客户姓名' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='address_shi' label='地市' width='180'>
+            <el-table-column align="center" prop='phone' label='手机号码' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='service_number' label='单号' width='180'>
+            <el-table-column align="center" prop='customer_type' label='客户类型' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='service_type' label='服务类型' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='fault_info' label='故障描述' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='phone_version' label='手机型号' width='180'>
+            </el-table-column>
+            <el-table-column align="center" prop='phone_color' label='手机颜色' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='star_time' label='受理时间' width='180' :formatter="dateFormat1">
             </el-table-column>
-            <el-table-column align="center" prop='phone_type' label='产品型号' width='180'>
+            <el-table-column align="center" prop='imei1' label='imei1' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='phone_version' label='产品名称' width='180'>
+            <el-table-column align="center" prop='imei2' label='imei2' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='imei1' label='IMEI1' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='imei2' label='IMEI2' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='new_imei1' label='新IMEI1' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='new_imei2' label='新IMEI2' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='customer_name' label='顾客姓名' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='phone' label='顾客电话' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='customer_type' label='顾客类型' width='180'>
-            </el-table-column>
-            <el-table-column align="center" prop='fault_info' label='顾客描述故障' width='180'>
+            <el-table-column align="center" prop='repair_result' label='维修结果' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='check_result' label='检测结果' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='materiel_name' label='处理内容' width='180'>
+            <el-table-column align="center" prop='actual_fault' label='实际故障' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='start_time' label='处理时间' width='180' :formatter="dateFormat2">
+            <el-table-column align="center" prop='fault_express' label='故障代码' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='materiel_name' label='更换物料' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='start_time' label='取机时间' width='180' :formatter="dateFormat3">
+            <el-table-column align="center" prop='new_imei1' label='新imei1' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='qr_code' label='用料二维码信息' width='180'>
+            <el-table-column align="center" prop='new_imei2' label='新imei2' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='act_time' label='激活时间' width='180' :formatter="dateFormat4">
+            <el-table-column align="center" prop='end_time' label='结单时间' width='180' :formatter="dateFormat2">
+            </el-table-column>
+            <el-table-column align="center" prop='website_name' label='网点' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='operator' label='操作员' width='180'>
             </el-table-column>
@@ -101,24 +89,25 @@
           </el-card>
           
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="file_visible = false">确定</el-button>
+            <el-button @click="file_visible = false">取消</el-button>
+            <el-button type="primary" @click="file_visible = false">下载全部</el-button>
           </div>
         </el-dialog>
 
         <el-table v-show="false" id="out-table" class="tableBox" :data='tableBox' style="width:100%;text-align:center" >
-             <el-table-column align="center" prop='website_name' label='受理机构名称' width='180'>
+            <el-table-column align="center" prop='website_name' label='受理机构名称' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='address_sheng' label='省份' width='180'>
+            <el-table-column align="center" prop='website_name' label='省份' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='address_shi' label='地市' width='180'>
+            <el-table-column align="center" prop='website_name' label='地市' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='service_number' label='单号' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='star_time' label='受理时间' width='180' :formatter="dateFormat1">
             </el-table-column>
-            <el-table-column align="center" prop='phone_type' label='产品型号' width='180'>
+            <el-table-column align="center" prop='phone_type' label='产品型号' width='180' :formatter="dateFormat1">
             </el-table-column>
-            <el-table-column align="center" prop='phone_version' label='产品名称' width='180'>
+            <el-table-column align="center" prop='phone_version' label='产品名称' width='180' :formatter="dateFormat1">
             </el-table-column>
             <el-table-column align="center" prop='imei1' label='IMEI1' width='180'>
             </el-table-column>
@@ -138,19 +127,17 @@
             </el-table-column>
             <el-table-column align="center" prop='check_result' label='检测结果' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='materiel_name' label='处理内容' width='180'>
+            <el-table-column align="center" prop='check_result' label='处理内容' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='start_time' label='处理时间' width='180' :formatter="dateFormat2">
             </el-table-column>
             <el-table-column align="center" prop='materiel_name' label='更换物料' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='start_time' label='取机时间' width='180' :formatter="dateFormat3">
+            <el-table-column align="center" prop='materiel_name' label='取机时间' width='180'>
             </el-table-column>
             <el-table-column align="center" prop='qr_code' label='用料二维码信息' width='180'>
             </el-table-column>
-            <el-table-column align="center" prop='act_time' label='激活时间' width='180' :formatter="dateFormat4">
-            </el-table-column>
-            <el-table-column align="center" prop='operator' label='操作员' width='180'>
+            <el-table-column align="center" prop='qr_code' label='激活时间' width='180'>
             </el-table-column>
         </el-table>
     </div>
@@ -167,7 +154,6 @@ export default {
         form:{
         phone_type: '',
       },
-      query_string: '',
       file_list: [],
       tableData: [],
       tableBox:[],
@@ -194,22 +180,11 @@ export default {
   },
   mounted() {
     this.axios.get("/show",{params:{uid:this.id,save_type:1}}).then(response => {this.tableData = response.data;
-    console.log(this.tableData)
     this.$refs.selectionTable.toggleAllSelection(this.tableData,true);});
     //手机类型列表
     this.axios.get("/gettypeoptions").then(response=>{this.type_options = response.data;})
  },
   methods: {
-    //搜索
-    querySearch(){
-      this.axios.get('/search',{params:{
-        query_string:this.query_string,
-        uid:this.id,
-      }}).then(response=>{
-        this.tableData = response.data
-        console.log(response.data[0])
-      })
-    },
     //附件管理
     file_manage(index,row,id){
       this.file_visible = true
@@ -305,25 +280,6 @@ export default {
         // console.log('这里是dateFormat')
         // console.log(row.end_time)
         return moment(date*1000).format("YYYY-MM-DD HH:mm:ss");
-    },
-    //激活时间
-      dateFormat4: function(row, column){
-        var date = row.act_time;
-          if (date === undefined) {
-          return "date is undefined";
-        }
-        return moment(date*1000).format("YYYY-MM-DD");
-    },
-      //取机时间
-       dateFormat3: function(row, column){
-        var date = Number(row.start_time)+60*60;
-          if (date === undefined) {
-          return "date is undefined";
-        }
-        //return moment(date).format("YYYY-MM-DD HH:mm:ss");
-        // console.log('这里是dateFormat')
-        // console.log(row.end_time)
-        return moment((date)*1000).format("YYYY-MM-DD HH:mm:ss");
     },
   }
 };

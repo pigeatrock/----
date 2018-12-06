@@ -45,7 +45,8 @@
                     <el-input v-model="edit_item.website_name" autocomplete="off"></el-input>
                   </el-form-item>
                   <el-form-item label="网点地址" :label-width="formLabelWidth">
-                    <el-input v-model="edit_item.address" autocomplete="off"></el-input>
+                    <el-input style="width:49%" v-model="edit_item.address_sheng" autocomplete="off" placeholder="省"></el-input>
+                    <el-input style="width:49%" v-model="edit_item.address_shi" autocomplete="off" placeholder="市"></el-input>
                   </el-form-item>
                   <el-form-item label="网点电话" :label-width="formLabelWidth">
                     <el-input v-model="edit_item.website_phone" autocomplete="off"></el-input>
@@ -68,7 +69,8 @@
                     <el-input v-model="add_item.website_name" autocomplete="off"></el-input>
                   </el-form-item>
                   <el-form-item label="网点地址" :label-width="formLabelWidth">
-                    <el-input v-model="add_item.address" autocomplete="off"></el-input>
+                    <el-input style="width:49%" v-model="add_item.address_sheng" autocomplete="off" placeholder="省"></el-input>
+                    <el-input style="width:49%" v-model="add_item.address_shi" autocomplete="off" placeholder="市"></el-input>
                   </el-form-item>
                   <el-form-item label="网点电话" :label-width="formLabelWidth">
                     <el-input v-model="add_item.website_phone" autocomplete="off"></el-input>
